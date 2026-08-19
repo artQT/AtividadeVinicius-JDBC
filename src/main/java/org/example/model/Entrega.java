@@ -7,13 +7,13 @@ import java.time.LocalDate;
 public class Entrega {
     
     private int id = 0;
-    private Pedido pedido;
-    private Motorista motorista;
+    private int pedido;
+    private int motorista;
     private LocalDate dataSaida;
-    private int dataEntrega;
+    private String dataEntrega;
     private StatusEntrega status;
     
-    public Entrega(int id, Pedido pedido, Motorista motorista, int dataEntrega) {
+    public Entrega(int id, int pedido, int motorista, String dataEntrega) {
         this.id = id;
         this.pedido = pedido;
         this.motorista = motorista;
@@ -22,7 +22,7 @@ public class Entrega {
         status = StatusEntrega.EM_ROTA;
     }
 
-    public Entrega(Pedido pedido, Motorista motorista, int dataEntrega) {
+    public Entrega(int pedido, int motorista, String dataEntrega) {
         this.pedido = pedido;
         this.motorista = motorista;
         this.dataSaida = LocalDate.now();
@@ -41,19 +41,19 @@ public class Entrega {
         this.id = id;
     }
 
-    public Pedido getPedido() {
+    public int getPedido() {
         return pedido;
     }
 
-    public void setPedido(Pedido pedido) {
+    public void setPedido(int pedido) {
         this.pedido = pedido;
     }
 
-    public Motorista getMotorista() {
+    public int getMotorista() {
         return motorista;
     }
 
-    public void setMotorista(Motorista motorista) {
+    public void setMotorista(int motorista) {
         this.motorista = motorista;
     }
 
@@ -65,11 +65,11 @@ public class Entrega {
         this.dataSaida = dataSaida;
     }
 
-    public int getDataEntrega() {
+    public String getDataEntrega() {
         return dataEntrega;
     }
 
-    public void setDataEntrega(int dataEntrega) {
+    public void setDataEntrega(String dataEntrega) {
         this.dataEntrega = dataEntrega;
     }
 

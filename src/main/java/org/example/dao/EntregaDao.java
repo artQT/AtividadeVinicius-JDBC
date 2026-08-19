@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class EntregaDao {
 
-    public void cadastrarEntrega(Entrega entrega, Pedido pedido, Motorista motorista) throws SQLException {
+    public void cadastrarEntrega(Entrega entrega) throws SQLException {
         String command = """
                 INSERT INTO entrega
                 (pedido_id, motorista_id, data_saida, data_entrega, status)
@@ -22,10 +22,10 @@ public class EntregaDao {
         try (Connection conn = ConnectionFactory.conectar();
              PreparedStatement prep = conn.prepareStatement(command)){
 
-            prep.setInt(1, pedido.getId());
-            prep.setInt(2, motorista.getId());
+            prep.setInt(1, entrega.getPedido().getId());
+            prep.setInt(2, entrega.getMotorista().getId());
             prep.setObject(3, entrega.getDataSaida());
-            prep.setInt(4, entrega.getDataEntrega());
+            prep.setString(4, entrega.getDataEntrega());
             prep.setString(5, entrega.getStatus().toString());
 
             prep.executeUpdate();

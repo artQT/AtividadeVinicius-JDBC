@@ -1,10 +1,12 @@
 package org.example;
 
 import org.example.dao.ClienteDao;
+import org.example.dao.EntregaDao;
 import org.example.dao.MotoristaDao;
 import org.example.dao.PedidoDao;
 import org.example.db.ConnectionFactory;
 import org.example.model.Cliente;
+import org.example.model.Entrega;
 import org.example.model.Motorista;
 import org.example.model.Pedido;
 
@@ -55,6 +57,9 @@ public class Main {
                 break;
             case 4:
                 criarEntrega();
+                break;
+            case 5:
+                criarHistorico();
                 break;
             default:
                 break;
@@ -138,7 +143,6 @@ public class Main {
 
         System.out.println("Insira o volume");
         double volumeM3 = INPUT.nextDouble();
-        
         System.out.println("Insira o peso em kg do pedido");
         double precoKG = INPUT.nextDouble();
 
@@ -152,6 +156,27 @@ public class Main {
     }
 
     public static void criarEntrega(){
-        System.out.println();
+        System.out.println("Insira o id do pedido");
+        int pedidoId = INPUT.nextInt();
+
+        System.out.println("Insira o id do motorista");
+        int motoristaId = INPUT.nextInt();
+        INPUT.nextLine();
+
+        System.out.println("Insira a data que foi entregue o pedido");
+        String dataEntrega = INPUT.nextLine();
+
+        Entrega entrega = new Entrega(pedidoId,motoristaId,dataEntrega);
+        EntregaDao entregaDao = new EntregaDao();
+
+        try{
+            entregaDao.cadastrarEntrega(entrega);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void criarHistorico(){
+
     }
 }
