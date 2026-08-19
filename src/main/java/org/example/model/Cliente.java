@@ -25,9 +25,6 @@ public class Cliente {
         this.estado = estado;
     }
 
-    public Cliente() {
-    }
-
     public int getId() {
         return id;
     }

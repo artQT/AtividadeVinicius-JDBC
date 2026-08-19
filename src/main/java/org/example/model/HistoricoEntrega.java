@@ -22,9 +22,6 @@ public class HistoricoEntrega {
         this.descricao = descricao;
     }
 
-    public HistoricoEntrega() {
-    }
-
     public int getId() {
         return id;
     }

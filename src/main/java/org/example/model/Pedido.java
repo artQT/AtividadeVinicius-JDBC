@@ -1,5 +1,6 @@
 package org.example.model;
 
+import jdk.jshell.Snippet;
 import org.example.enums.StatusPedido;
 
 import java.time.LocalDate;
@@ -13,16 +14,13 @@ public class Pedido {
     private double pesoKG;
     private StatusPedido status;
     
-    public Pedido(int id, Cliente cliente, double volumeM3, double pesoKG) {
+    public Pedido(int id, Cliente cliente, LocalDate dataPedido , double volumeM3, double pesoKG, StatusPedido status) {
         this.id = id;
         this.cliente = cliente;
         this.dataPedido = LocalDate.now();
         this.volumeM3 = volumeM3;
         this.pesoKG = pesoKG;
         status = StatusPedido.PENDENTE;
-    }
-
-    public Pedido() {
     }
 
     public Pedido(Cliente cliente, double volumeM3, double pesoKG) {

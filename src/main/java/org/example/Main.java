@@ -149,7 +149,7 @@ public class Main {
         Pedido pedido = new Pedido(cliente, volumeM3, precoKG);
         PedidoDao pedidoDao = new PedidoDao();
         try {
-            pedidoDao.criar(pedido, cliente);
+            pedidoDao.criar(pedido);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -159,14 +159,32 @@ public class Main {
         System.out.println("Insira o id do pedido");
         int pedidoId = INPUT.nextInt();
 
+        PedidoDao pedidoDao = new PedidoDao();
+        Pedido pedido = null;
+
+        try{
+            pedido = pedidoDao.buscarPedido(pedidoId);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
         System.out.println("Insira o id do motorista");
         int motoristaId = INPUT.nextInt();
         INPUT.nextLine();
 
+        MotoristaDao motoristaDao = new MotoristaDao();
+        Motorista motorista = null;
+
+        try{
+            motorista = motoristaDao.buscarMotoristas(motoristaId);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
         System.out.println("Insira a data que foi entregue o pedido");
         String dataEntrega = INPUT.nextLine();
 
-        Entrega entrega = new Entrega(pedidoId,motoristaId,dataEntrega);
+        Entrega entrega = new Entrega(pedido,motorista,dataEntrega);
         EntregaDao entregaDao = new EntregaDao();
 
         try{
@@ -177,6 +195,7 @@ public class Main {
     }
 
     public static void criarHistorico(){
-
+        /*pedir a entrega (fazer entrega buscar()),
+          pedir data do evento, pedir descricao */
     }
 }

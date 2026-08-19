@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PedidoDao {
     
-    public void criar(Pedido pedido, Cliente cliente) throws SQLException{
+    public void criar(Pedido pedido) throws SQLException{
          String command = """
                 INSERT INTO pedido
                 (cliente_id, data_pedido, volume_m3, peso_kg, status)
@@ -23,7 +23,7 @@ public class PedidoDao {
         try (Connection conn = ConnectionFactory.conectar();
              PreparedStatement prep = conn.prepareStatement(command)){
 
-                prep.setInt(1, cliente.getId());
+                prep.setInt(1, pedido.getCliente().getId());
                 prep.setObject(2, pedido.getDataPedido());
                 prep.setDouble(3, pedido.getVolumeM3());
                 prep.setDouble(4, pedido.getPesoKG());
@@ -31,5 +31,44 @@ public class PedidoDao {
 
                 prep.executeUpdate();
             }
+    }
+
+    public Pedido buscarPedido(int id) throws SQLException{
+        String query = """
+                SELECT * FROM pedido WHERE id = ?
+                """;
+
+        Pedido pedido = null;
+        Cliente cliente = null;
+
+        int idNovo = 0;
+        int idCliente = 0;
+        LocalDate data = null;
+        double volumeM3 = 0;
+        double pesoKG = 0;
+        StatusPedido status = null;
+
+        ClienteDao clienteDao = new ClienteDao();
+
+        try (Connection conn = ConnectionFactory.conectar();
+            PreparedStatement prep = conn.prepareStatement(query)){
+
+            prep.setInt(1, id);
+
+            ResultSet rs = prep.executeQuery();
+
+            if (rs.next()){
+                idNovo = rs.getInt("id");
+                idCliente = rs.getInt("cliente_id");
+                data = rs.getDate("data_evento").toLocalDate();
+                volumeM3 = rs.getDouble("volume_m3");
+                pesoKG = rs.getDouble("peso_kg");
+                status = StatusPedido.valueOf(rs.getString("status"));
+
+                cliente = clienteDao.buscar(idCliente);
+                pedido = new Pedido(idNovo,cliente, data, volumeM3, pesoKG, status);
+            }
+        }
+        return pedido;
     }
 }

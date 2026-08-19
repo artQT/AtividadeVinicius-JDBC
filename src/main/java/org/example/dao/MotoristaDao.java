@@ -55,7 +55,7 @@ public class MotoristaDao {
         return motoristas;
     }
 
-    public Motorista buscarMotoristas(int id){
+    public Motorista buscarMotoristas(int id) throws  SQLException{
         String query = """
                 Select * from motorista where id = ?
                 """;
@@ -67,21 +67,19 @@ public class MotoristaDao {
         String cidadeBase = "";
 
         try(Connection conn = ConnectionFactory.conectar();
-            PreparedStatement prep = conn.prepareStatement(query)){
+            PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
             ResultSet rs = prep.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 idNovo = rs.getInt("id");
                 nome = rs.getString("nome");
                 cnh = rs.getString("cnh");
                 veiculo = rs.getString("veiculo");
                 cidadeBase = rs.getString("cidade base");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return new Motorista(idNovo, nome, cnh, veiculo, cidadeBase);
     }
