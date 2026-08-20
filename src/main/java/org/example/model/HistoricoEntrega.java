@@ -6,17 +6,17 @@ public class HistoricoEntrega {
 
     private int id;
     private Entrega entrega;
-    private LocalDate dataEvento;
+    private String dataEvento;
     private String descricao;
     
-    public HistoricoEntrega(int id, Entrega entrega, LocalDate dataEvento, String descricao) {
+    public HistoricoEntrega(int id, Entrega entrega, String dataEvento, String descricao) {
         this.id = id;
         this.entrega = entrega;
         this.dataEvento = dataEvento;
         this.descricao = descricao;
     }
 
-    public HistoricoEntrega(Entrega entrega, LocalDate dataEvento, String descricao) {
+    public HistoricoEntrega(Entrega entrega, String dataEvento, String descricao) {
         this.entrega = entrega;
         this.dataEvento = dataEvento;
         this.descricao = descricao;
@@ -38,11 +38,11 @@ public class HistoricoEntrega {
         this.entrega = entrega;
     }
 
-    public LocalDate getDataEvento() {
+    public String getDataEvento() {
         return dataEvento;
     }
 
-    public void setDataEvento(LocalDate dataEvento) {
+    public void setDataEvento(String dataEvento) {
         this.dataEvento = dataEvento;
     }
 

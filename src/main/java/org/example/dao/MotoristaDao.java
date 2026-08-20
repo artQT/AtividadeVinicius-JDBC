@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MotoristaDao {
     
-    public void cadastrar(Motorista motorista) throws SQLException{
+    public void cadastrarMotorista(Motorista motorista) throws SQLException{
         String command = """
                 INSERT INTO motorista
                 (nome, cnh, veiculo, cidade_base)

@@ -21,10 +21,12 @@ public class HistoricoDao {
              PreparedStatement prep = conn.prepareStatement(command)){
 
             prep.setInt(1, historicoEntrega.getEntrega().getId());
-            prep.setObject(2, historicoEntrega.getDataEvento());
+            prep.setString(2, historicoEntrega.getDataEvento());
             prep.setString(3, historicoEntrega.getDescricao());
 
             prep.executeUpdate();
         }
     }
+
+    public HistoricoEntrega
 }

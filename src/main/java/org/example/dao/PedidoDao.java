@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PedidoDao {
     
-    public void criar(Pedido pedido) throws SQLException{
+    public void criarPedido(Pedido pedido) throws SQLException{
          String command = """
                 INSERT INTO pedido
                 (cliente_id, data_pedido, volume_m3, peso_kg, status)
@@ -65,7 +65,7 @@ public class PedidoDao {
                 pesoKG = rs.getDouble("peso_kg");
                 status = StatusPedido.valueOf(rs.getString("status"));
 
-                cliente = clienteDao.buscar(idCliente);
+                cliente = clienteDao.buscarCliente(idCliente);
                 pedido = new Pedido(idNovo,cliente, data, volumeM3, pesoKG, status);
             }
         }

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ClienteDao {
     
-    public void cadastrar(Cliente cliente) throws SQLException{
+    public void cadastrarCliente(Cliente cliente) throws SQLException{
         String command = """
                 INSERT INTO cliente 
                 (nome, cpfCnpj,endereco,cidade,estado)
@@ -33,7 +33,7 @@ public class ClienteDao {
             }
     }
 
-    public List<Cliente> listar() throws SQLException{
+    public List<Cliente> listarCliente() throws SQLException{
         String command = """
                 SELECT * FROM
                 cliente;
@@ -62,7 +62,7 @@ public class ClienteDao {
         return clientes;
     }
 
-    public Cliente buscar(int id){
+    public Cliente buscarCliente(int id){
         String command = """
             SELECT * FROM cliente WHERE id = ?
             """;

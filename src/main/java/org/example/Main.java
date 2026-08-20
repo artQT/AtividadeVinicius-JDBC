@@ -1,14 +1,8 @@
 package org.example;
 
-import org.example.dao.ClienteDao;
-import org.example.dao.EntregaDao;
-import org.example.dao.MotoristaDao;
-import org.example.dao.PedidoDao;
+import org.example.dao.*;
 import org.example.db.ConnectionFactory;
-import org.example.model.Cliente;
-import org.example.model.Entrega;
-import org.example.model.Motorista;
-import org.example.model.Pedido;
+import org.example.model.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -86,7 +80,7 @@ public class Main {
         ClienteDao clienteDao = new ClienteDao();
 
         try {
-            clienteDao.cadastrar(cliente);
+            clienteDao.cadastrarCliente(cliente);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,7 +103,7 @@ public class Main {
         MotoristaDao motoristaDao = new MotoristaDao();
 
         try {
-            motoristaDao.cadastrar(motorista);
+            motoristaDao.cadastrarMotorista(motorista);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -120,7 +114,7 @@ public class Main {
 
         List<Cliente> listaCliente = new ArrayList<>();
         try {
-            listaCliente = clienteDao.listar();
+            listaCliente = clienteDao.listarCliente();
 
             for (Cliente c : listaCliente){
                 System.out.println("ID: "+c.getId());
@@ -139,7 +133,7 @@ public class Main {
         System.out.println("Insira o id do cliente");
         int clienteID = INPUT.nextInt();
 
-        Cliente cliente = clienteDao.buscar(clienteID);
+        Cliente cliente = clienteDao.buscarCliente(clienteID);
 
         System.out.println("Insira o volume");
         double volumeM3 = INPUT.nextDouble();
@@ -149,7 +143,7 @@ public class Main {
         Pedido pedido = new Pedido(cliente, volumeM3, precoKG);
         PedidoDao pedidoDao = new PedidoDao();
         try {
-            pedidoDao.criar(pedido);
+            pedidoDao.criarPedido(pedido);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -195,7 +189,31 @@ public class Main {
     }
 
     public static void criarHistorico(){
-        /*pedir a entrega (fazer entrega buscar()),
-          pedir data do evento, pedir descricao */
+        System.out.println("Insira o id da entrega");
+        int idEntrega = INPUT.nextInt();
+
+        EntregaDao entregaDao = new EntregaDao();
+        Entrega entrega = null;
+
+        try{
+            entrega = entregaDao.buscarEntrega(idEntrega);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Qual a data do envento?");
+        String dataEvento = INPUT.nextLine();
+
+        System.out.println("Insira uma descriçãopra o evento?");
+        String descricao = INPUT.nextLine();
+
+        HistoricoEntrega historicoEntrega = new HistoricoEntrega(entrega, dataEvento, descricao);
+        HistoricoDao historicoDao = new HistoricoDao();
+
+        try {
+            historicoDao.criarHistorico(historicoEntrega);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

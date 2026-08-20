@@ -13,7 +13,7 @@ public class Entrega {
     private String dataEntrega;
     private StatusEntrega status;
     
-    public Entrega(int id, Pedido pedido, Motorista motorista, String dataEntrega) {
+    public Entrega(int id, Pedido pedido, Motorista motorista, LocalDate dataSaida, String dataEntrega, StatusEntrega statusEntrega) {
         this.id = id;
         this.pedido = pedido;
         this.motorista = motorista;
