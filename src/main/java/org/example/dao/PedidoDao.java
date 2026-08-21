@@ -60,7 +60,7 @@ public class PedidoDao {
             if (rs.next()){
                 idNovo = rs.getInt("id");
                 idCliente = rs.getInt("cliente_id");
-                data = rs.getDate("data_evento").toLocalDate();
+                data = rs.getDate("data_pedido").toLocalDate();
                 volumeM3 = rs.getDouble("volume_m3");
                 pesoKG = rs.getDouble("peso_kg");
                 status = StatusPedido.valueOf(rs.getString("status"));

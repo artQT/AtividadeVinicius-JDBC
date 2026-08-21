@@ -77,4 +77,21 @@ public class EntregaDao {
         }
         return entrega;
     }
+
+    public void atualizarEntrega(Entrega entrega) throws SQLException{
+        String query = """
+                UPDATE entrega
+                SET status = ?
+                WHERE id = ?
+                """;
+
+        try (Connection conn = ConnectionFactory.conectar();
+            PreparedStatement prep = conn.prepareStatement(query)){
+
+            prep.setString(1, entrega.getStatus().toString());
+            prep.setInt(2, entrega.getId());
+
+            prep.executeUpdate();
+        }
+    }
 }

@@ -78,7 +78,7 @@ public class MotoristaDao {
                 nome = rs.getString("nome");
                 cnh = rs.getString("cnh");
                 veiculo = rs.getString("veiculo");
-                cidadeBase = rs.getString("cidade base");
+                cidadeBase = rs.getString("cidade_base");
             }
         }
         return new Motorista(idNovo, nome, cnh, veiculo, cidadeBase);
