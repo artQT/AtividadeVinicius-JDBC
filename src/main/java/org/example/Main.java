@@ -66,7 +66,7 @@ public class Main {
                     atualizarEntrega();
                     break;
                 case 7:
-                    listarEntregasClienteMoto();  //relatorioEntregaMotorista()
+                    listarEntregasClienteMoto();
                     break;
                 case 8:
                     relatorioEntregaMotorista();
