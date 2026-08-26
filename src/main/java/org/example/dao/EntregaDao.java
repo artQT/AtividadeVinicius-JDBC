@@ -11,6 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PropertyPermission;
 
 public class EntregaDao {
 
@@ -57,7 +61,7 @@ public class EntregaDao {
             int idPedido = 0;
             Motorista motorista;
             int idMotorista = 0;
-            LocalDate dataSaida;
+            LocalDateTime dataSaida;
             String dataEntrega;
             StatusEntrega statusEntrega;
 
@@ -65,7 +69,7 @@ public class EntregaDao {
                 idBd = rs.getInt("id");
                 idPedido = rs.getInt("pedido_id");
                 idMotorista = rs.getInt("motorista_id");
-                dataSaida = rs.getDate("data_saida").toLocalDate();
+                dataSaida = rs.getTimestamp("data_saida").toLocalDateTime();
                 dataEntrega = rs.getString("data_entrega");
                 statusEntrega = StatusEntrega.valueOf(rs.getString("status"));
 
@@ -93,5 +97,65 @@ public class EntregaDao {
 
             prep.executeUpdate();
         }
+    }
+
+    public List<Entrega> listarEntregaClienteMotorista() throws SQLException{
+        String query = """
+                SELECT ent.id,
+                       pedido_id,
+                       motorista_id,
+                       data_saida,
+                       data_entrega,
+                       ent.status
+                FROM entrega AS ent INNER JOIN pedido ON
+                ent.pedido_id = pedido.id
+                WHERE motorista_id AND cliente_id IS NOT NULL
+                """;
+
+        List<Entrega> entregas = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.conectar();
+            PreparedStatement prep = conn.prepareStatement(query)) {
+
+            ResultSet rs = prep.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                int pedidoId = rs.getInt("pedido_id");
+                int motorista_id = rs.getInt("motorista_id");
+                LocalDateTime dataSaida = rs.getTimestamp("data_saida").toLocalDateTime();
+                String dataEntrega = rs.getString("data_entrega");
+                StatusEntrega statusEntrega = StatusEntrega.valueOf(rs.getString("status"));
+
+                PedidoDao pedidoDao = new PedidoDao();
+                MotoristaDao motoristaDao = new MotoristaDao();
+
+                Pedido pedido = pedidoDao.buscarPedido(pedidoId);
+                Motorista motorista = motoristaDao.buscarMotoristas(motorista_id);
+
+                Entrega entrega = new Entrega(id, pedido, motorista, dataSaida, dataEntrega, statusEntrega);
+                entregas.add(entrega);
+            }
+        }
+        return entregas;
+    }
+
+    public int numeroEntregaMoto() throws SQLException{
+        String query = """
+                SELECT COUNT(motorista_id) AS numero_de_motorista FROM entrega;
+                """;
+
+        int numeroEntrega = 0;
+
+        try (Connection conn = ConnectionFactory.conectar();
+             PreparedStatement prep = conn.prepareStatement(query)){
+
+            ResultSet rs = prep.executeQuery();
+
+            if(rs.next()){
+                numeroEntrega = rs.getInt("numero_de_motorista");
+            }
+        }
+        return numeroEntrega;
     }
 }

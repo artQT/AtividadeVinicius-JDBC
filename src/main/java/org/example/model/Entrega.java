@@ -3,31 +3,32 @@ package org.example.model;
 import org.example.enums.StatusEntrega;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Entrega {
     
     private int id = 0;
     private Pedido pedido;
     private Motorista motorista;
-    private LocalDate dataSaida;
+    private LocalDateTime dataSaida;
     private String dataEntrega;
     private StatusEntrega status;
     
-    public Entrega(int id, Pedido pedido, Motorista motorista, LocalDate dataSaida, String dataEntrega, StatusEntrega statusEntrega) {
+    public Entrega(int id, Pedido pedido, Motorista motorista, LocalDateTime dataSaida, String dataEntrega, StatusEntrega statusEntrega) {
         this.id = id;
         this.pedido = pedido;
         this.motorista = motorista;
-        this.dataSaida = LocalDate.now();
+        this.dataSaida = LocalDateTime.now();
         this.dataEntrega = dataEntrega;
-        status = StatusEntrega.EM_ROTA;
+        this.status = statusEntrega;
     }
 
-    public Entrega(Pedido pedido, Motorista motorista, String dataEntrega) {
+    public Entrega(Pedido pedido, Motorista motorista, String dataEntrega, StatusEntrega statusEntrega) {
         this.pedido = pedido;
         this.motorista = motorista;
-        this.dataSaida = LocalDate.now();
+        this.dataSaida = LocalDateTime.now();
         this.dataEntrega = dataEntrega;
-        status = StatusEntrega.EM_ROTA;
+        this.status = statusEntrega;
     }
 
     public int getId() {
@@ -54,11 +55,11 @@ public class Entrega {
         this.motorista = motorista;
     }
 
-    public LocalDate getDataSaida() {
+    public LocalDateTime getDataSaida() {
         return dataSaida;
     }
 
-    public void setDataSaida(LocalDate dataSaida) {
+    public void setDataSaida(LocalDateTime dataSaida) {
         this.dataSaida = dataSaida;
     }
 

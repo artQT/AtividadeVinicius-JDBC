@@ -7,6 +7,8 @@ import org.example.model.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -62,6 +64,15 @@ public class Main {
                     break;
                 case 6:
                     atualizarEntrega();
+                    break;
+                case 7:
+                    listarEntregasClienteMoto();  //relatorioEntregaMotorista()
+                    break;
+                case 8:
+                    relatorioEntregaMotorista();
+                    break;
+                case 9:
+                    relatorioClienteMaiorVolume();
                     break;
                 case 0:
                     a = false;
@@ -166,7 +177,7 @@ public class Main {
         int pedidoId = INPUT.nextInt();
 
         PedidoDao pedidoDao = new PedidoDao();
-        Pedido pedido = new Pedido(0, null, null, 0, 0, null);
+        Pedido pedido = null;
 
         try {
             pedido = pedidoDao.buscarPedido(pedidoId);
@@ -179,7 +190,7 @@ public class Main {
         INPUT.nextLine();
 
         MotoristaDao motoristaDao = new MotoristaDao();
-        Motorista motorista = new Motorista(0,null, null, null, null);
+        Motorista motorista = null;
 
         try {
             motorista = motoristaDao.buscarMotoristas(motoristaId);
@@ -190,7 +201,7 @@ public class Main {
         System.out.println("Insira a data que foi entregue o pedido");
         String dataEntrega = INPUT.nextLine();
 
-        Entrega entrega = new Entrega(0, pedido, motorista, null, dataEntrega, null);
+        Entrega entrega = new Entrega(0, pedido, motorista, LocalDateTime.now(), dataEntrega, StatusEntrega.EM_ROTA);
         EntregaDao entregaDao = new EntregaDao();
 
         try {
@@ -203,6 +214,7 @@ public class Main {
     public static void criarHistorico() {
         System.out.println("Insira o id da entrega");
         int idEntrega = INPUT.nextInt();
+        INPUT.nextLine();
 
         EntregaDao entregaDao = new EntregaDao();
         Entrega entrega = null;
@@ -216,7 +228,7 @@ public class Main {
         System.out.println("Qual a data do envento?");
         String dataEvento = INPUT.nextLine();
 
-        System.out.println("Insira uma descriçãopra o evento?");
+        System.out.println("Insira uma descrição para o evento?");
         String descricao = INPUT.nextLine();
 
         HistoricoEntrega historicoEntrega = new HistoricoEntrega(entrega, dataEvento, descricao);
@@ -259,5 +271,60 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void listarEntregasClienteMoto(){
+        EntregaDao entregaDao = new EntregaDao();
+        List<Entrega> entregas = new ArrayList<>();
+
+        try{
+            entregas = entregaDao.listarEntregaClienteMotorista();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for(Entrega i : entregas){
+            System.out.println("id: " + i.getId());
+            System.out.println("Pedido: " + i.getPedido().getId());
+            System.out.println("Motorista: " + i.getMotorista().getId());
+            System.out.println("Data saida: " + i.getDataSaida());
+            System.out.println("Data entrega: " + i.getDataEntrega());
+            System.out.println("Status: " + i.getStatus());
+            System.out.println();
+        }
+    }
+
+    public static void relatorioEntregaMotorista(){
+        EntregaDao entregaDao = new EntregaDao();
+
+        int numeroEntrega = 0;
+
+        try{
+            numeroEntrega = entregaDao.numeroEntregaMoto();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("Numero de entrega por motoristas: " + numeroEntrega);
+    }
+
+    public static void relatorioClienteMaiorVolume(){
+        ClienteDao clienteDao = new ClienteDao();
+
+        Cliente cliente = null;
+
+        try{
+            cliente = clienteDao.clienteMaiorVolume();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("---Cliente com maior valor---");
+        System.out.println("Id: " + cliente.getId());
+        System.out.println("Nome: " + cliente.getNome());
+        System.out.println("Cpf ou Cnpj: " + cliente.getCpfCnpj());
+        System.out.println("Endereco: " + cliente.getEndereco());
+        System.out.println("Cidade: " + cliente.getCidade());
+        System.out.println("Estado: " + cliente.getEstado());
     }
 }
